@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Tests\VCR\PHPUnit\TestListener;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
 final class VCRTestListenerTest extends TestCase
@@ -28,9 +30,8 @@ final class VCRTestListenerTest extends TestCase
 
     /**
      * @vcr unittest_annotation_test
-     *
-     * @dataProvider dummyDataProvider
      */
+    #[DataProvider('dummyDataProvider')]
     public function testInterceptsWithAnnotationsWhenUsingDataProvider(int $dummyValue): void
     {
         // Content of tests/fixtures/unittest_annotation_test: "This is an annotation test dummy".
@@ -40,9 +41,7 @@ final class VCRTestListenerTest extends TestCase
         $this->assertEquals('This is a annotation test dummy.', $result, 'Call was not intercepted (using annotations with data provider).');
     }
 
-    /**
-     * @group https://github.com/php-vcr/phpunit-testlistener-vcr/issues/29
-     */
+    #[Group('https://github.com/php-vcr/phpunit-testlistener-vcr/issues/29')]
     public function testNoVcrAnnotationRunsSuccessfulAndDoesNotProduceWarnings()
     {
         $this->assertTrue(true, 'just adding an assertion here');
