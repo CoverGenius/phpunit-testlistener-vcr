@@ -18,6 +18,7 @@ Use `@vcr cassette_name` on your tests to turn VCR automatically on and off.
 ``` php
 
 use PHPUnit\Framework\TestCase;
+use VCR\PHPUnit\TestListener\Attributes\Vcr;
 
 class VCRTest extends TestCase
 {
@@ -29,6 +30,14 @@ class VCRTest extends TestCase
         // Content of tests/fixtures/unittest_annotation_test: "This is a annotation test dummy".
         $result = file_get_contents('http://google.com');
         $this->assertEquals('This is a annotation test dummy.', $result, 'Call was not intercepted (using annotations).');
+    }
+
+    #[Vcr('unittest_annotation_test')]
+    public function testInterceptsWithAttributes(): void
+    {
+        // Content of tests/fixtures/unittest_annotation_test: "This is a annotation test dummy".
+        $result = file_get_contents('http://google.com');
+        $this->assertEquals('This is a annotation test dummy.', $result, 'Call was not intercepted (using attributes).');
     }
 }
 ```
