@@ -50,8 +50,13 @@ class OnTestPrepared implements Event\Test\PreparedSubscriber
         }
 
         $reflection = new \ReflectionMethod($class, $method);
-        $docblock = $reflection->getDocComment();
 
+        $attributes = $reflection->getAttributes(\VCR\PHPUnit\TestListener\Attributes\Vcr::class);
+        if (!empty($attributes)) {
+            return $attributes[0]->getArguments()[0];
+        }
+
+        $docblock = $reflection->getDocComment();
         if (!empty($docblock)) {
             $parsed = self::parseDocBlock($docblock, $tag);
             return array_pop($parsed);
